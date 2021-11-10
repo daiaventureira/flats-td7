@@ -10,6 +10,9 @@ class PropertyReservation < ApplicationRecord
 
   enum status: { pending: 5, accepted: 10, canceled: 15, rejected: 20  }
 
+  def cancel_after_reservation_starts
+    errors.add(:start_date, 'não pode cancelar reservas já iniciadas') if start_date <= Date.today
+  end
   private
 
   def calculate_total_value

@@ -6,32 +6,27 @@
   <dl>
     <dt>Tipo:</dt>
     <dd><%= @property.property_type.name %></dd>
-
     <dt>Quartos:</dt>
     <dd><%= @property.rooms %></dd>
     <dt>Banheiros:</dt>
     <dd><%= @property.bathrooms %></dd>
-
     <dt>Aceita Pets:</dt>
     <% if @property.pets? %>
       <dd>Sim</dd>
     <% else %>
       <dd>Não</dd>
     <% end %>
-
     <dt>Estacionamento:</dt>
     <% if @property.parking_slot? %>
       <dd>Sim</dd>
     <% else %>
       <dd>Não</dd>
     <% end %>
-
     <dt>Diária:</dt>
     <dd><%= number_to_currency(@property.daily_rate) %></dd>
     <dt>Imóvel de:</dt>
     <dd><%= @property.property_owner.email %></dd>
   </dl>
-
   <% if property_owner_signed_in? && @property.property_owner == current_property_owner %>
     <h3>Reservas</h3>
     <% @property.property_reservations.each do |pr| %>
@@ -47,16 +42,13 @@
           <dt>Status:</dt>
           <dd><%= I18n.t(pr.status) %></dd>
         </dl>
-        
         <% if pr.status == 'pending' %>
           <%= link_to 'Aceitar Reserva', accept_property_reservation_path(pr.id), method: :post %>
-        <% elsif pr.status == 'accepted' %>
+        <% elsif pr.status == 'accepted' && !pr.cancel_after_reservation_starts %>
           <%= link_to 'Cancelar Reserva', cancel_property_reservation_path(pr.id), method: :post %>
         <% end %>
-
       </div>
     <% end %>
-    
   <% elsif user_signed_in? %>
     <h3>Reserve Agora</h3>
     <%= form_with model: [@property, @property_reservation] do |f| %>
@@ -69,6 +61,5 @@
       <%= f.submit 'Enviar Reserva' %>
     <% end %>
   <% end %>
-
 </div>
 <%= link_to('Voltar', root_path) %>
