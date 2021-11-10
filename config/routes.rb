@@ -8,6 +8,7 @@ Rails.application.routes.draw do
     get 'my_properties', on: :collection
     resources :property_reservations, only: %i[create show], shallow: true do
       post 'accept', on: :member
+      post 'cancel', on: :member
     end
   end
   resources :property_types, only: [:show]

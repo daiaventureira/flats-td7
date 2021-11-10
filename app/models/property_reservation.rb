@@ -8,7 +8,7 @@ class PropertyReservation < ApplicationRecord
   validate :end_date_greater_than_start_date
   validate :start_date_in_the_future
 
-  enum status: { pending: 5, accepted: 10, rejected: 20 }
+  enum status: { pending: 5, accepted: 10, canceled: 15, rejected: 20  }
 
   private
 

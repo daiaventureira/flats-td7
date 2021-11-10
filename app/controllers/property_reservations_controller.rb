@@ -21,6 +21,17 @@ class PropertyReservationsController < ApplicationController
     redirect_to @property_reservation.property
   end
 
+  def cancel
+    @property_reservation = PropertyReservation.find(params[:id])
+    
+    if @property_reservation.property.property_owner == current_property_owner
+      @property_reservation.canceled!
+      redirect_to @property_reservation.property
+    else
+      redirect_to root_path      
+    end
+  end
+
   private
 
   def property_reservation_params

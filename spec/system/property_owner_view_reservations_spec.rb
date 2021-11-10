@@ -110,6 +110,6 @@ describe 'Property owner view reservations' do
     expect(page).to have_content "Data de Início: #{I18n.localize 1.week.from_now.to_date}"
     expect(page).to have_content "Data de Saída: #{I18n.localize 2.weeks.from_now.to_date}"
     expect(page).to have_content 'Total de Pessoas: 6'
-    expect(page).to have_content 'Status: Cancela'
+    expect(page).to have_content 'Status: Cancelada'
   end
 end

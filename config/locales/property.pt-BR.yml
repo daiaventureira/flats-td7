@@ -3,6 +3,7 @@ pt-BR:
   pending: 'Pendente'
   accepted: 'Aceita'
   rejected: 'Rejeitada'
+  canceled: 'Cancelada'
   activerecord:
     models:
       property: 'Propriedade'

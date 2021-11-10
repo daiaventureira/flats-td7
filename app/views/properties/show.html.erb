@@ -48,7 +48,11 @@
           <dd><%= I18n.t(pr.status) %></dd>
         </dl>
         
-        <%= link_to 'Aceitar Reserva', accept_property_reservation_path(pr.id), method: :post %>
+        <% if pr.status == 'pending' %>
+          <%= link_to 'Aceitar Reserva', accept_property_reservation_path(pr.id), method: :post %>
+        <% elsif pr.status == 'accepted' %>
+          <%= link_to 'Cancelar Reserva', cancel_property_reservation_path(pr.id), method: :post %>
+        <% end %>
 
       </div>
     <% end %>
