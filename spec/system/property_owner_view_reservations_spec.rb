@@ -112,4 +112,36 @@ describe 'Property owner view reservations' do
     expect(page).to have_content 'Total de Pessoas: 6'
     expect(page).to have_content 'Status: Cancelada'
   end
+
+  it "and try to cancel a reservation on the start date or after" do
+    travel_to 1.week.ago do
+      property_type = PropertyType.create!(name: 'Um tipo qualquer')
+      john = PropertyOwner.create!(email: 'john@doe.com.br', password: '123456')
+      johns_property = Property.create!(title: 'Apartamento Novo',
+                                        description: 'Um apartamento legal',
+                                        rooms: 3, bathrooms: 2, pets: true, daily_rate: 100,
+                                        property_type: property_type, property_owner: john)
+
+      andrew = User.create!(email: 'andrew@doe.com.br', password: '123456')
+
+      PropertyReservation.create!(start_date: 1.week.from_now, end_date: 2.weeks.from_now,
+                                  guests: 6, property: johns_property, user: andrew)
+    end
+
+    travel_to 1.week.ago do
+      PropertyReservation.find(1).accepted!
+    end
+    login_as PropertyOwner.find(1), scope: :property_owner
+    visit root_path
+    click_on 'Meus Imóveis'
+    click_on 'Apartamento Novo'
+
+    expect(page).to_not have_content 'Cancelar Reserva'
+    expect(page).to have_content 'Reservas'
+    expect(page).to have_content 'Reserva de andrew@doe.com.br'
+    expect(page).to have_content "Data de Início: #{I18n.localize Date.today}"
+    expect(page).to have_content "Data de Saída: #{I18n.localize 1.weeks.from_now.to_date}"
+    expect(page).to have_content 'Total de Pessoas: 6'
+    expect(page).to have_content 'Status: Aceita'
+  end
 end

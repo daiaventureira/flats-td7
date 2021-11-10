@@ -28,7 +28,7 @@ class PropertyReservationsController < ApplicationController
       @property_reservation.canceled!
       redirect_to @property_reservation.property
     else
-      redirect_to root_path      
+      redirect_to root_path
     end
   end
 
